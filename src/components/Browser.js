@@ -30,15 +30,28 @@ class Browser extends Component {
   handleChange(event) {
     this.setState({ kittyId: event.target.value });
   }
+  async makeCall() {
+    let response = await this.contracts.CryptoKitties.methods
+      .getKitty(this.state.kittyId)
+      .call();
+    console.log(response);
+    return response;
+  }
 
-  handleSubmit(event) {
-    alert("kitty search for " + this.state.kittyId);
-    event.preventDefault();
+  async handleSubmit(event) {
+    let response;
+    try {
+      response = await this.contracts.CryptoKitties.methods
+        .getKitty(this.state.kittyId)
+        .call();
+    } catch (e) {
+      console.log("error", e);
+    }
+
+    console.log(response);
   }
 
   render() {
-    console.log(this.contracts.CryptoKitties);
-
     return (
       <div className="browser">
         <h1>Kitty Browser</h1>
