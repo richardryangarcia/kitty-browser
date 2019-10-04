@@ -3,11 +3,12 @@ import { object } from "prop-types";
 import Web3 from "web3";
 import KittyCoreABI from "../contracts/KittyCoreABI.json";
 import { CONTRACT_NAME, CONTRACT_ADDRESS } from "../config";
+import { formatDate } from "../utils/date";
 
 class Browser extends Component {
   constructor(props, context) {
     super(props);
-    this.state = { kittyId: 0 };
+    this.state = { kittyId: 0, birthTime: null, generation: null, genes: null };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.contracts = context.drizzle.contracts;
@@ -28,36 +29,48 @@ class Browser extends Component {
   }
 
   handleChange(event) {
-    this.setState({ kittyId: event.target.value });
-  }
-  async makeCall() {
-    let response = await this.contracts.CryptoKitties.methods
-      .getKitty(this.state.kittyId)
-      .call();
-    console.log(response);
-    return response;
+    this.setState({
+      kittyId: event.target.value,
+      birthTime: null,
+      generation: null,
+      genes: null
+    });
   }
 
   async handleSubmit(event) {
+    event.preventDefault();
     let response;
     try {
       response = await this.contracts.CryptoKitties.methods
         .getKitty(this.state.kittyId)
         .call();
+      this.setState({
+        birthTime: response.birthTime,
+        generation: response.generation,
+        genes: response.genes
+      });
     } catch (e) {
-      console.log("error", e);
+      this.setState({
+        birthTime: null,
+        generation: null,
+        genes: null
+      });
     }
-
-    console.log(response);
   }
 
   render() {
+    const { birthTime, genes, generation, kittyId } = this.state;
+    let formattedBday;
+    if (birthTime) {
+      formattedBday = formatDate(birthTime);
+    }
+
     return (
       <div className="browser">
         <h1>Kitty Browser</h1>
 
-        {/* Input to type in the kitty ID here */}
         <form onSubmit={this.handleSubmit}>
+          <h3>Kitty ID:</h3>
           <input
             type="text"
             value={this.state.kittyId}
@@ -66,7 +79,21 @@ class Browser extends Component {
           <button type="submit">Submit</button>
         </form>
 
-        {/* Display Kitty info here */}
+        {birthTime && (
+          <div>
+            <h3>Genes</h3>
+            <p>{genes}</p>
+            <h3>Generation</h3>
+            <p>{generation}</p>
+            <h3>Birth Time</h3>
+            <p>{formattedBday}</p>
+            <img
+              src={`https://img.cryptokitties.co/0x06012c8cf97bead5deae237070f9587f8e7a266d/${kittyId}.svg`}
+              style={{ height: "500px", width: "500px" }}
+              alt="kitty"
+            />
+          </div>
+        )}
       </div>
     );
   }
