@@ -38,7 +38,7 @@ class Browser extends Component {
   }
 
   async handleSubmit(event) {
-    event.preventDefault();
+    event && event.preventDefault();
     let response;
     try {
       response = await this.contracts.CryptoKitties.methods
@@ -60,10 +60,7 @@ class Browser extends Component {
 
   render() {
     const { birthTime, genes, generation, kittyId } = this.state;
-    let formattedBday;
-    if (birthTime) {
-      formattedBday = formatDate(birthTime);
-    }
+    let formattedBday = birthTime && formatDate(birthTime);
 
     return (
       <div className="browser">
@@ -78,6 +75,16 @@ class Browser extends Component {
           />
           <button type="submit">Submit</button>
         </form>
+
+        <button
+          onClick={() => {
+            this.setState({ kittyId: Math.round(Math.random() * 1713872) });
+            this.handleSubmit();
+          }}
+          style={{ backgroundColor: "green", color: "white" }}
+        >
+          Random Kitty
+        </button>
 
         {birthTime && (
           <div>
