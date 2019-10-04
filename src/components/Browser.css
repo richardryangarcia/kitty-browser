@@ -1,0 +1,31 @@
+.header {
+  text-align: center;
+  margin-top: 3em;
+}
+
+.search-btns {
+  text-align: center;
+  margin-top: 1em;
+}
+
+button {
+  margin-right: 1em;
+}
+
+.card {
+  margin-top: 1em;
+  line-height: 4em;
+  margin: 2em 4em;
+  border: none;
+  -webkit-box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.4);
+}
+
+.kitty-details {
+  padding: 5em 5em;
+  font-size: 12px;
+}
+
+.kitty-img {
+  text-align: center;
+}

@@ -3,7 +3,9 @@ import { object } from "prop-types";
 import Web3 from "web3";
 import KittyCoreABI from "../contracts/KittyCoreABI.json";
 import { CONTRACT_NAME, CONTRACT_ADDRESS } from "../config";
-import { formatDate } from "../utils/date";
+import { Button, Form, Container, Row, Col } from "react-bootstrap";
+import { KittyCard } from "./KittyCard";
+import "./Browser.css";
 
 class Browser extends Component {
   constructor(props, context) {
@@ -60,47 +62,56 @@ class Browser extends Component {
 
   render() {
     const { birthTime, genes, generation, kittyId } = this.state;
-    let formattedBday = birthTime && formatDate(birthTime);
 
     return (
       <div className="browser">
-        <h1>Kitty Browser</h1>
+        <Container>
+          <Row>
+            <Col>
+              <h1 className="header">Kitty Browser</h1>
 
-        <form onSubmit={this.handleSubmit}>
-          <h3>Kitty ID:</h3>
-          <input
-            type="text"
-            value={this.state.kittyId}
-            onChange={this.handleChange}
-          />
-          <button type="submit">Submit</button>
-        </form>
+              <Form onSubmit={this.handleSubmit}>
+                <Form.Control
+                  size="lg"
+                  type="text"
+                  placeholder="Kitty ID"
+                  value={this.state.kittyId}
+                  onChange={this.handleChange}
+                />
 
-        <button
-          onClick={() => {
-            this.setState({ kittyId: Math.round(Math.random() * 1713872) });
-            this.handleSubmit();
-          }}
-          style={{ backgroundColor: "green", color: "white" }}
-        >
-          Random Kitty
-        </button>
+                <div className="search-btns">
+                  <Button variant="primary" type="submit">
+                    Search Kitty
+                  </Button>
 
-        {birthTime && (
-          <div>
-            <h3>Genes</h3>
-            <p>{genes}</p>
-            <h3>Generation</h3>
-            <p>{generation}</p>
-            <h3>Birth Time</h3>
-            <p>{formattedBday}</p>
-            <img
-              src={`https://img.cryptokitties.co/0x06012c8cf97bead5deae237070f9587f8e7a266d/${kittyId}.svg`}
-              style={{ height: "500px", width: "500px" }}
-              alt="kitty"
-            />
-          </div>
-        )}
+                  <Button
+                    variant="success"
+                    onClick={() => {
+                      this.setState({
+                        kittyId: Math.round(Math.random() * 1713872)
+                      });
+                      this.handleSubmit();
+                    }}
+                  >
+                    Random Kitty
+                  </Button>
+                </div>
+              </Form>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              {birthTime && (
+                <KittyCard
+                  birthTime={birthTime}
+                  genes={genes}
+                  generation={generation}
+                  kittyId={kittyId}
+                />
+              )}
+            </Col>
+          </Row>
+        </Container>
       </div>
     );
   }
