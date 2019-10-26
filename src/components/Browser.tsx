@@ -3,16 +3,46 @@ import { object } from "prop-types";
 import Web3 from "web3";
 import KittyCoreABI from "../contracts/KittyCoreABI.json";
 import { CONTRACT_NAME, CONTRACT_ADDRESS } from "../config";
-import { Button, Form, Container, Row, Col } from "react-bootstrap";
+import {
+  Button,
+  Form,
+  Container,
+  Row,
+  Col,
+  FormControlProps
+} from "react-bootstrap";
 import { KittyCard } from "./KittyCard";
 import "./Browser.css";
 
-class Browser extends Component {
-  constructor(props, context) {
+type BrowserState = {
+  kittyId: string;
+  birthTime?: Date;
+  generation: number;
+  genes: number;
+};
+
+declare global {
+  interface Window {
+    web3: any;
+  }
+}
+
+class Browser extends Component<{}, BrowserState> {
+  contracts: any;
+  public static contextTypes = {
+    drizzle: object
+  };
+
+  constructor(props: any, context: any) {
     super(props);
-    this.state = { kittyId: 0, birthTime: null, generation: null, genes: null };
-    this.handleChange = this.handleChange.bind(this);
+    this.state = {
+      kittyId: "",
+      birthTime: undefined,
+      generation: 0,
+      genes: 0
+    };
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.contracts = context.drizzle.contracts;
   }
 
@@ -30,16 +60,17 @@ class Browser extends Component {
     });
   }
 
-  handleChange(event) {
+  handleChange = (event: React.FormEvent<FormControlProps>) => {
+    const value = event.currentTarget.value ? event.currentTarget.value : "";
     this.setState({
-      kittyId: event.target.value,
-      birthTime: null,
-      generation: null,
-      genes: null
+      kittyId: value,
+      birthTime: undefined,
+      generation: 0,
+      genes: 0
     });
-  }
+  };
 
-  async handleSubmit(event) {
+  handleSubmit = async (event: React.FormEvent<FormControlProps>) => {
     event && event.preventDefault();
     let response;
     try {
@@ -53,12 +84,12 @@ class Browser extends Component {
       });
     } catch (e) {
       this.setState({
-        birthTime: null,
-        generation: null,
-        genes: null
+        birthTime: undefined,
+        generation: 0,
+        genes: 0
       });
     }
-  }
+  };
 
   render() {
     const { birthTime, genes, generation, kittyId } = this.state;
@@ -86,11 +117,11 @@ class Browser extends Component {
 
                   <Button
                     variant="success"
-                    onClick={() => {
+                    onClick={(event: React.FormEvent<FormControlProps>) => {
                       this.setState({
-                        kittyId: Math.round(Math.random() * 1713872)
+                        kittyId: Math.round(Math.random() * 1713872).toString()
                       });
-                      this.handleSubmit();
+                      this.handleSubmit(event);
                     }}
                   >
                     Random Kitty
@@ -116,9 +147,5 @@ class Browser extends Component {
     );
   }
 }
-
-Browser.contextTypes = {
-  drizzle: object
-};
 
 export default Browser;

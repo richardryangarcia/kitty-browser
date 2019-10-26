@@ -2,8 +2,19 @@ import React from "react";
 import { formatDate } from "../utils/date";
 import { Card } from "react-bootstrap";
 
-export const KittyCard = props => {
-  const { birthTime, genes, generation, kittyId } = props;
+type KittyCardProps = {
+  birthTime?: Date;
+  genes: number;
+  generation: number;
+  kittyId: string;
+};
+
+export const KittyCard: React.FC<KittyCardProps> = ({
+  birthTime,
+  genes,
+  generation,
+  kittyId
+}) => {
   let formattedBday = birthTime && formatDate(birthTime);
 
   return (
@@ -22,7 +33,6 @@ export const KittyCard = props => {
         <div className="kitty-img">
           <img
             src={`https://img.cryptokitties.co/0x06012c8cf97bead5deae237070f9587f8e7a266d/${kittyId}.svg`}
-            style={{ height: "500px", width: "500px" }}
             alt="kitty"
           />
         </div>

@@ -14,7 +14,7 @@ button {
 
 .card {
   margin-top: 1em;
-  line-height: 4em;
+  line-height: 1em;
   margin: 2em 4em;
   border: none;
   -webkit-box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.4);
@@ -22,10 +22,15 @@ button {
 }
 
 .kitty-details {
-  padding: 5em 5em;
+  padding: 5em 5em 0em 5em;
   font-size: 12px;
 }
 
 .kitty-img {
   text-align: center;
+}
+
+img {
+  height: 400px;
+  width: 400px;
 }
