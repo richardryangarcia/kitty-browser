@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { object } from "prop-types";
 import Web3 from "web3";
 import KittyCoreABI from "../contracts/KittyCoreABI.json";
+import { AbiItem, AbiType } from "web3-utils";
 import { CONTRACT_NAME, CONTRACT_ADDRESS } from "../config";
 import {
   Button,
@@ -27,6 +28,13 @@ declare global {
   }
 }
 
+enum Mutability {
+  View = "view",
+  Nonpayable = "nonpayable",
+  Payable = "payable",
+  Pure = "pure"
+}
+
 class Browser extends Component<{}, BrowserState> {
   contracts: any;
   public static contextTypes = {
@@ -43,14 +51,30 @@ class Browser extends Component<{}, BrowserState> {
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.mutability = this.mutability.bind(this);
     this.contracts = context.drizzle.contracts;
   }
 
   componentDidMount() {
     const web3 = new Web3(window.web3.currentProvider);
     // Initialize the contract instance
+    const typedABI: AbiItem[] = KittyCoreABI.map(sig => {
+      const type: AbiType = sig.type as AbiType;
+      const item: AbiItem = {
+        anonymous: undefined,
+        constant: sig.constant,
+        inputs: sig.inputs,
+        name: sig.name,
+        outputs: sig.outputs,
+        payable: sig.payable,
+        stateMutability: this.mutability(sig.stateMutability),
+        type: type
+      };
+      return item;
+    });
+
     const kittyContract = new web3.eth.Contract(
-      KittyCoreABI, // import the contracts's ABI and use it here
+      typedABI, // import the contracts's ABI and use it here
       CONTRACT_ADDRESS
     );
     // Add the contract to the drizzle store
@@ -68,6 +92,21 @@ class Browser extends Component<{}, BrowserState> {
       generation: 0,
       genes: 0
     });
+  };
+
+  mutability = (mutability: string | undefined) => {
+    switch (mutability) {
+      case "view":
+        return Mutability.View;
+      case "nonpayable":
+        return Mutability.Nonpayable;
+      case "payable":
+        return Mutability.Payable;
+      case "pure":
+        return Mutability.Pure;
+      default:
+        return undefined;
+    }
   };
 
   handleSubmit = async (event: React.FormEvent<FormControlProps>) => {
