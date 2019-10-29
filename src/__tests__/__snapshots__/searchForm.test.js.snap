@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SearchForm /> renders correctly 1`] = `
+<DocumentFragment>
+  <form
+    class=""
+  >
+    <input
+      class="form-control form-control-lg"
+      placeholder="Kitty ID"
+      type="text"
+      value="470916"
+    />
+    <div
+      class="search-btns"
+    >
+      <button
+        class="btn-search btn btn-primary"
+        type="submit"
+      >
+        Search Kitty
+      </button>
+      <button
+        class="btn-random btn btn-success"
+        type="button"
+      >
+        Random Kitty
+      </button>
+    </div>
+  </form>
+</DocumentFragment>
+`;

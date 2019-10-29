@@ -3,10 +3,11 @@ module.exports = {
   // `<rootDir>` is a token Jest substitutes
   roots: ["<rootDir>/src"],
 
+  preset: "ts-jest",
   // Jest transformations -- this adds support for TypeScript
   // using ts-jest
   transform: {
-    "^.+\\.tsx?$": "ts-jest"
+    "^.+\\.tsx?$": "babel-jest"
   },
 
   // Runs special logic, such as cleaning up components

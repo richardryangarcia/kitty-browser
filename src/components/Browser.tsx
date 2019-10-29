@@ -13,7 +13,7 @@ import {
   FormControlProps
 } from "react-bootstrap";
 import { KittyCard } from "./KittyCard";
-import "./Browser.css";
+import { SearchForm } from "../components/SearchForm";
 
 type BrowserState = {
   kittyId: string;
@@ -51,6 +51,7 @@ class Browser extends Component<{}, BrowserState> {
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleRandomKitty = this.handleRandomKitty.bind(this);
     this.mutability = this.mutability.bind(this);
     this.contracts = context.drizzle.contracts;
   }
@@ -84,7 +85,7 @@ class Browser extends Component<{}, BrowserState> {
     });
   }
 
-  handleChange = (event: React.FormEvent<FormControlProps>) => {
+  handleChange(event: React.FormEvent<FormControlProps>) {
     const value = event.currentTarget.value ? event.currentTarget.value : "";
     this.setState({
       kittyId: value,
@@ -92,9 +93,9 @@ class Browser extends Component<{}, BrowserState> {
       generation: 0,
       genes: 0
     });
-  };
+  }
 
-  mutability = (mutability: string | undefined) => {
+  mutability(mutability: string | undefined) {
     switch (mutability) {
       case "view":
         return Mutability.View;
@@ -107,9 +108,9 @@ class Browser extends Component<{}, BrowserState> {
       default:
         return undefined;
     }
-  };
+  }
 
-  handleSubmit = async (event: React.FormEvent<FormControlProps>) => {
+  async handleSubmit(event: React.FormEvent<FormControlProps>) {
     event && event.preventDefault();
     let response;
     try {
@@ -128,7 +129,14 @@ class Browser extends Component<{}, BrowserState> {
         genes: 0
       });
     }
-  };
+  }
+
+  handleRandomKitty(event: React.FormEvent<FormControlProps>) {
+    this.setState({
+      kittyId: Math.round(Math.random() * 1713872).toString()
+    });
+    this.handleSubmit(event);
+  }
 
   render() {
     const { birthTime, genes, generation, kittyId } = this.state;
@@ -139,34 +147,12 @@ class Browser extends Component<{}, BrowserState> {
           <Row>
             <Col>
               <h1 className="header">Kitty Browser</h1>
-
-              <Form onSubmit={this.handleSubmit}>
-                <Form.Control
-                  size="lg"
-                  type="text"
-                  placeholder="Kitty ID"
-                  value={this.state.kittyId}
-                  onChange={this.handleChange}
-                />
-
-                <div className="search-btns">
-                  <Button variant="primary" type="submit">
-                    Search Kitty
-                  </Button>
-
-                  <Button
-                    variant="success"
-                    onClick={(event: React.FormEvent<FormControlProps>) => {
-                      this.setState({
-                        kittyId: Math.round(Math.random() * 1713872).toString()
-                      });
-                      this.handleSubmit(event);
-                    }}
-                  >
-                    Random Kitty
-                  </Button>
-                </div>
-              </Form>
+              <SearchForm
+                handleSubmit={this.handleSubmit}
+                handleChange={this.handleChange}
+                handleRandomKitty={this.handleRandomKitty}
+                kittyId={kittyId}
+              />
             </Col>
           </Row>
           <Row>
