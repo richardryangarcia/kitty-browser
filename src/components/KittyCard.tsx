@@ -22,16 +22,17 @@ export const KittyCard: React.FC<KittyCardProps> = ({
       <Card.Body>
         <div className="kitty-details">
           <h5>Kitty ID</h5>
-          <p>{kittyId}</p>
+          <p data-testid="id">{kittyId}</p>
           <h5>Genes</h5>
-          <p>{genes}</p>
+          <p data-testid="genes">{genes}</p>
           <h5>Generation</h5>
-          <p>{generation}</p>
+          <p data-testid="generation">{generation}</p>
           <h5>Birth Time</h5>
-          <p>{formattedBday}</p>
+          <p data-testid="formattedBday">{formattedBday}</p>
         </div>
         <div className="kitty-img">
           <img
+            data-testid="kitty-image"
             src={`https://img.cryptokitties.co/0x06012c8cf97bead5deae237070f9587f8e7a266d/${kittyId}.svg`}
             alt="kitty"
           />

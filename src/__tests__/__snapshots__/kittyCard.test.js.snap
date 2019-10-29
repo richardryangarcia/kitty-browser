@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<KittyCard /> renders correctly 1`] = `
+<DocumentFragment>
+  <div
+    class="card"
+  >
+    <div
+      class="card-body"
+    >
+      <div
+        class="kitty-details"
+      >
+        <h5>
+          Kitty ID
+        </h5>
+        <p
+          data-testid="id"
+        >
+          470916
+        </p>
+        <h5>
+          Genes
+        </h5>
+        <p
+          data-testid="genes"
+        >
+          115792089237316195423570985008687907853269984665640564039457584007913129639935
+        </p>
+        <h5>
+          Generation
+        </h5>
+        <p
+          data-testid="generation"
+        >
+          0
+        </p>
+        <h5>
+          Birth Time
+        </h5>
+        <p
+          data-testid="formattedBday"
+        >
+          October 3 2017
+        </p>
+      </div>
+      <div
+        class="kitty-img"
+      >
+        <img
+          alt="kitty"
+          data-testid="kitty-image"
+          src="https://img.cryptokitties.co/0x06012c8cf97bead5deae237070f9587f8e7a266d/470916.svg"
+        />
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
