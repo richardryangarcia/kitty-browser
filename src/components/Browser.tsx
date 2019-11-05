@@ -4,14 +4,7 @@ import Web3 from "web3";
 import KittyCoreABI from "../contracts/KittyCoreABI.json";
 import { AbiItem, AbiType } from "web3-utils";
 import { CONTRACT_NAME, CONTRACT_ADDRESS } from "../config";
-import {
-  Button,
-  Form,
-  Container,
-  Row,
-  Col,
-  FormControlProps
-} from "react-bootstrap";
+import { Container, Row, Col, FormControlProps } from "react-bootstrap";
 import { KittyCard } from "./KittyCard";
 import { SearchForm } from "../components/SearchForm";
 
